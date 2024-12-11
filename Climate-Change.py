@@ -12,6 +12,8 @@ Preamble: Load data from source CSV files
 """
 # Load data by year from 2018 to 2023
 path_to_data_folder = "../../data/Weather-Data/"
+path_to_2003 = path_to_data_folder + "virginia 2003-01-01 to 2003-12-31.csv"
+path_to_2013 = path_to_data_folder + "virginia 2013-01-01 to 2013-12-31.csv"
 path_to_2018 = path_to_data_folder + "virginia 2018-01-01 to 2018-12-31.csv"
 path_to_2019 = path_to_data_folder + "virginia 2019-01-01 to 2019-12-31.csv"
 path_to_2020 = path_to_data_folder + "virginia 2020-01-01 to 2020-12-31.csv"
@@ -22,8 +24,7 @@ path_to_2023 = path_to_data_folder + "virginia 2023-01-01 to 2023-12-31.csv"
 """
 Question 1: Find the weekly average temperatures for each year and report which week of each year had the lowest and 
 highest average temperature. Count the number of weeks where the weekly average temperature was below 50 degrees 
-fahrenheit for each year. Print out the year with the most and the year with the least amount of weeks below 50 degrees 
-fahrenheit.
+fahrenheit for each year. 
 """
 print('-----Question 1-----')
 
@@ -62,6 +63,8 @@ def analyze_yearly_data(year, file_path):
 
     return weekly_avg, low_temp, low_index, high_temp, high_index, below_50_weeks
 
+weekly_avg_2003, low_temp_2003, low_index_2003, high_temp_2003, high_index_2003, below_50_weeks_2003 = analyze_yearly_data(2003, path_to_2003)
+weekly_avg_2013, low_temp_2013, low_index_2013, high_temp_2013, high_index_2013, below_50_weeks_2013 = analyze_yearly_data(2013, path_to_2013)
 weekly_avg_2018, low_temp_2018, low_index_2018, high_temp_2018, high_index_2018, below_50_weeks_2018 = analyze_yearly_data(2018, path_to_2018)
 weekly_avg_2019, low_temp_2019, low_index_2019, high_temp_2019, high_index_2019, below_50_weeks_2019 = analyze_yearly_data(2019, path_to_2019)
 weekly_avg_2020, low_temp_2020, low_index_2020, high_temp_2020, high_index_2020, below_50_weeks_2020 = analyze_yearly_data(2020, path_to_2020)
@@ -71,6 +74,8 @@ weekly_avg_2023, low_temp_2023, low_index_2023, high_temp_2023, high_index_2023,
 
 print("-------------------------------------------------")
 print("Year|\t\tLowest Temp|\t\t\tWeek with lowest Temp|\t\tHighest Temp|\t\t\tWeek with highest Temp|\t\tWeeks Below 50")
+print("2003", "|\t", low_temp_2003, "|\t\t",low_index_2003, "|\t\t", high_temp_2003, "|\t\t",high_index_2003, "|\t", below_50_weeks_2003)
+print("2013", "|\t", low_temp_2013, "|\t\t",low_index_2013, "|\t\t", high_temp_2013, "|\t\t",high_index_2013, "|\t", below_50_weeks_2013)
 print("2018", "|\t\t\t", low_temp_2018, "|\t\t\t\t",low_index_2018, "|\t\t", high_temp_2018, "|\t\t",high_index_2018, "|\t", below_50_weeks_2018)
 print("2019", "|\t", low_temp_2019, "|\t\t",low_index_2019, "|\t\t", high_temp_2019, "|\t\t",high_index_2019, "|\t", below_50_weeks_2019)
 print("2020", "|\t", low_temp_2020, "|\t\t",low_index_2020, "|\t\t", high_temp_2020, "|\t\t",high_index_2020, "|\t", below_50_weeks_2020)
@@ -87,8 +92,6 @@ Fit this error distribution to a normal curve and plot a histogram of the data o
 normal curve. Include appropriate labels, titles, and legends. 
 """
 print('-----Question 2-----')
-# analyze data for 2018 and 2023
-
 # Perform a t-test to compare weekly average between 2018 and 2023
 t_test, p_value = ttest_ind(weekly_avg_2018['temp'], weekly_avg_2023['temp'])
 print("The p-value is " + str(p_value) + " and the t-test statistic is " + str(t_test))
@@ -108,6 +111,8 @@ temp_error = avg_temp_2018 - avg_temp_2023
 (fitted_mean, fitted_std) = norm.fit(temp_error)
 
 plt.hist(temp_error, bins=16, label="Temp Error") # histogram of the data with 16 bins
+plt.title('Temp Error Histogram')
+plt.xlabel('Tempr Error')
 
 temp_min = min(temp_error) # use min to find start for linspace
 temp_max = max(temp_error) # use max to find stop for linspace
@@ -123,34 +128,27 @@ plt.ylabel("Density")
 plt.legend()
 plt.show()
 
-# print out the results
-print('Parameters for fitted distribution are mu=', fitted_mean, ' and std=', fitted_std)
-
-# determine the 95% confidence interval with scipy
-(lower_ci, upper_ci) = norm.interval(confidence=0.95, loc=fitted_mean, scale=fitted_std)
-
-# print out the results
-print('For the fitted temp data. The 95% confidence interval is: (', lower_ci, ",", upper_ci, ")")
-
-
 """
-Question 3: Weather irregularities. Calculate when the weekly average has changed by 50 percent or more week to week.
+Question 3: Calculate when the weekly average has changed by 20 percent or more week to week.
 """
 print('-----Question 3-----')
-"""
+# Combine weekly averages for all years into a single DataFrame using pd.concat
 all_weekly_avg = pd.concat([weekly_avg_2018, weekly_avg_2019,  weekly_avg_2020, weekly_avg_2021, weekly_avg_2022, weekly_avg_2023], axis=0)
 
+# Convert temperatures to a numpy array
 all_weekly = all_weekly_avg['temp'].to_numpy()
+
+# Use np.gradient to compute week-to-week differences
 difference_each_week = np.gradient(all_weekly)
-arr = np.array(difference_each_week)
-percent_change = np.diff(arr)/arr[:-1]*100
-print(percent_change)
 
-# Find the indices where the percentage change is 50% or more
-irregularities_indices = np.where(np.abs(percent_change) >= 50)[0]
+# Align shapes by skipping the first or last element
+percent_change = (difference_each_week[1:] / all_weekly[1:]) * 100
 
-# Print out the weeks where the change is 50% or more
-print("Weeks with 50% or more change in weekly average:")
-for idx in irregularities_indices:
-    print(f"Week {all_weekly_avg.iloc[idx]['week']}: {percent_change[idx]:.2f}% change")
-"""
+# Find the indices where the percentage change is 20% or more
+irregularities_indices = np.where(np.abs(percent_change) >= 20)[0]
+
+# Print out the weeks with 20% or more change
+print("Weeks with 20% or more change in weekly average:")
+for index in irregularities_indices:
+    week_info = all_weekly_avg.iloc[index + 1]  # Offset index by 1 to match shapes
+    print("Week of " + str(week_info.name) + " with a percent change of " + str(percent_change[index]))
