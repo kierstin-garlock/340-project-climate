@@ -1,6 +1,15 @@
 # 340-project-climate
 Engineering Design and Analysis Final Project on Climate Change Data 
 
+This project is designed to analyze weather data in order to help address questions related to climate change. The 
+questions used to address this topic are listed below. The data used in our analysis is located in the climate 
+data folder and includes data from 2003, 2013, and 2018-2023. Question 1 uses a definition to walk through each 
+data set and return the desired values, including weeks with the highest and lowest temperature values. Question
+2 is a statistical analysis that uses a t-test to determine if there is a significant difference in weekly averages 
+between 2018 and 2023. Question 2 also return a plot displaying the error distribution to a normal curve and a 
+histogram of the data. Question 3 is designed to try to identify irregularities in temperatures between weeks. To 
+improve the analysis of this code, one might increase the range of years from which data was taken. 
+
 Question 1: Find the weekly average temperatures for each year and report which week of each year had the lowest and 
 highest average temperature. Count the number of weeks where the weekly average temperature was below 50 degrees 
 fahrenheit for each year.
