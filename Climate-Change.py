@@ -6,12 +6,11 @@ from scipy.stats import norm, chisquare, ttest_ind
 import matplotlib.pyplot as plt
 import datetime
 
-
 """
 Preamble: Load data from source CSV files 
 """
 # Load data by year from 2018 to 2023
-path_to_data_folder = "../../data/Weather-Data/"
+path_to_data_folder = "Climate Data/"
 path_to_2003 = path_to_data_folder + "virginia 2003-01-01 to 2003-12-31.csv"
 path_to_2013 = path_to_data_folder + "virginia 2013-01-01 to 2013-12-31.csv"
 path_to_2018 = path_to_data_folder + "virginia 2018-01-01 to 2018-12-31.csv"
@@ -110,16 +109,13 @@ temp_error = avg_temp_2018 - avg_temp_2023
 
 (fitted_mean, fitted_std) = norm.fit(temp_error)
 
-plt.hist(temp_error, bins=16, label="Temp Error") # histogram of the data with 16 bins
-plt.title('Temp Error Histogram')
-plt.xlabel('Tempr Error')
+plt.hist(temp_error, bins=16, density=True, label="Temp Error") # histogram of the data with 16 bins
 
 temp_min = min(temp_error) # use min to find start for linspace
 temp_max = max(temp_error) # use max to find stop for linspace
 # use lin space to make a vector with a linear spacing of points between start and stop
 x_temp = np.linspace(temp_min, temp_max, 100)
 temp_pdf = norm.pdf(x_temp, fitted_mean, fitted_std) # use the normal distribution probability density function to generate results
-plt.figure(figsize=(8, 6))
 plt.plot(x_temp, temp_pdf, label="Normal Curve") # plot the sampled distribution
 
 plt.title("Temp Error Distribution To Fitted Normal Curve")
@@ -138,17 +134,17 @@ all_weekly_avg = pd.concat([weekly_avg_2018, weekly_avg_2019,  weekly_avg_2020, 
 # Convert temperatures to a numpy array
 all_weekly = all_weekly_avg['temp'].to_numpy()
 
-# Use np.gradient to compute week-to-week differences
+# Use np.gradient to compute week to week differences
 difference_each_week = np.gradient(all_weekly)
 
-# Align shapes by skipping the first or last element
+# Find percent change and skip the first and last elements to align data
 percent_change = (difference_each_week[1:] / all_weekly[1:]) * 100
 
-# Find the indices where the percentage change is 20% or more
+# Find where percent change is grater than or equal to 20% using np.where and np.abs
 irregularities_indices = np.where(np.abs(percent_change) >= 20)[0]
 
 # Print out the weeks with 20% or more change
 print("Weeks with 20% or more change in weekly average:")
 for index in irregularities_indices:
-    week_info = all_weekly_avg.iloc[index + 1]  # Offset index by 1 to match shapes
+    week_info = all_weekly_avg.iloc[index + 1]  # Offset index by 1 to match data
     print("Week of " + str(week_info.name) + " with a percent change of " + str(percent_change[index]))
