@@ -24,3 +24,23 @@ normal curve. Include appropriate labels, titles, and legends.
 
 Question 3: Calculate when the weekly average has changed by 20 percent or more week to week.
 
+# **Code Resources**
+| Function Used  | Explination          | Link |  
+| :-------------: |:------------------------:| :-----:|
+| pd.to_datetime      | convert date column to datetime | https://stackoverflow.com/questions/17087314/get-date-from-week-number |
+| dt.year      | filter the data by the given year |  https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.set_index.html  |
+| .set_index | Use resample to set 'datetime' as the index to make it easier to report values | https://stackoverflow.com/questions/38542419/could-pandas-use-column-as-index |
+| resample('W-MON').mean() | resample data by week starting on monday | https://stackoverflow.com/questions/14530556/resample-time-series-in-pandas-to-a-weekly-interval |
+| ttest_ind | Performs t-test for two independent data sets | https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html |
+| np.linspace | make a vector with a linear spacing of points between start and stop | https://numpy.org/doc/2.1/reference/generated/numpy.linspace.html | 
+| norm.pdf | normal distribution probability density function to generate results | https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html | 
+| pd.concat | Used to combine data frames along axis | https://pandas.pydata.org/docs/reference/api/pandas.concat.html | 
+| np.gradient | Used to compute differences between weeks | https://numpy.org/doc/2.1/reference/generated/numpy.gradient.html | 
+| np.where(np.abs()) | Uses “where” to select element and “abs” to return absolute value of element | https://numpy.org/doc/2.1/reference/generated/numpy.where.html | 
+
+
+
+
+
+
+
