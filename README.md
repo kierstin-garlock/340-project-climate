@@ -38,8 +38,21 @@ Question 3: Calculate when the weekly average has changed by 20 percent or more 
 | np.gradient | Used to compute differences between weeks | https://numpy.org/doc/2.1/reference/generated/numpy.gradient.html | 
 | np.where(np.abs()) | Uses “where” to select element and “abs” to return absolute value of element | https://numpy.org/doc/2.1/reference/generated/numpy.where.html | 
 
+# Sample Results
+![unnamed](https://github.com/user-attachments/assets/fba63d00-748e-470e-9388-017c57be8577)
+
+![unnamed](https://github.com/user-attachments/assets/671ba1ab-6d5c-448f-8dba-5157b8edd4db)
+
+![unnamed](https://github.com/user-attachments/assets/a3ed8fad-16e0-4cf3-9caa-af57328c054b)
+
+![unnamed](https://github.com/user-attachments/assets/8fd56116-82a4-44b9-80da-f6335e05225c)
 
 
+# Limations
+Limation of this program include accessing data files via the internet given there may be paywalls or daily caps. Other limiations include the code itself may become repeitive resulting in long blocks of code making the code appear cluttered and difficult to follow/read. 
+
+# Future Results
+Future results may include a wider dataset to track and compare weather data over a greater period of time. Data may be further expanded to encompass national or global weather data and anaylze trends. The code may be altered to focused on specific regions or predict future weather patterns based on trends. 
 
 
 
